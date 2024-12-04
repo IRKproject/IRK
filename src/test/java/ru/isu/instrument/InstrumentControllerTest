@@ -1,0 +1,59 @@
+package ru.isu.instrument;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+@WebMvcTest(InstrumentController.class)
+class InstrumentControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private InstrumentService instrumentService;
+
+    @MockBean
+    private PartService partService;
+
+    @Test
+    void testListInstruments() throws Exception {
+        Instrument instrument = new Instrument();
+        instrument.setId(1);
+        instrument.setInstrumentNumber(1001);
+        when(instrumentService.getAllInstruments()).thenReturn(List.of(instrument));
+
+        mockMvc.perform(get("/instruments"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("allInstruments"))
+            .andExpect(view().name("instrument/listInstruments"));
+    }
+
+    @Test
+    void testGetInstrument() throws Exception {
+        Instrument instrument = new Instrument();
+        instrument.setId(1);
+        instrument.setInstrumentNumber(1001);
+
+        when(instrumentService.getInstrumentById(1L)).thenReturn(instrument);
+
+        mockMvc.perform(get("/instruments/get/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.instrumentNumber").value(1001));
+    }
+}

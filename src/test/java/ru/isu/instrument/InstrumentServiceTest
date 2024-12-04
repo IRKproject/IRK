@@ -1,0 +1,57 @@
+package ru.isu.instrument;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+class InstrumentServiceTest {
+
+    @Mock
+    private InstrumentRepository instrumentRepository;
+
+    private InstrumentService instrumentService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        instrumentService = new InstrumentService(instrumentRepository);
+    }
+
+    @Test
+    void testGetAllInstruments() {
+        Instrument instrument = new Instrument();
+        when(instrumentRepository.findAll()).thenReturn(List.of(instrument));
+
+        assertEquals(1, instrumentService.getAllInstruments().size());
+        verify(instrumentRepository).findAll();
+    }
+
+    @Test
+    void testGetInstrumentById() {
+        Instrument instrument = new Instrument();
+        when(instrumentRepository.findById(1L)).thenReturn(Optional.of(instrument));
+
+        assertEquals(instrument, instrumentService.getInstrumentById(1L));
+        verify(instrumentRepository).findById(1L);
+    }
+
+    @Test
+    void testSaveInstrument() {
+        Instrument instrument = new Instrument();
+
+        instrumentService.saveInstrument(instrument);
+
+        verify(instrumentRepository).save(instrument);
+    }
+}

@@ -1,0 +1,42 @@
+package ru.isu.instrument;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+@DataJpaTest
+class InstrumentRepositoryTest {
+
+    @Autowired
+    private InstrumentRepository instrumentRepository;
+
+    @Test
+    void testFindById() {
+        Instrument instrument = new Instrument();
+        instrument.setInstrumentNumber(1001);
+        instrumentRepository.save(instrument);
+
+        Optional<Instrument> found = instrumentRepository.findById((long) instrument.getId());
+        assertTrue(found.isPresent());
+        assertEquals(1001, found.get().getInstrumentNumber());
+    }
+
+    @Test
+    void testSave() {
+        Instrument instrument = new Instrument();
+        instrument.setInstrumentNumber(2002);
+
+        Instrument saved = instrumentRepository.save(instrument);
+        assertNotNull(saved.getId());
+        assertEquals(2002, saved.getInstrumentNumber());
+    }
+}

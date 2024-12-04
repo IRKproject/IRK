@@ -29,7 +29,7 @@ public class Technitian {
     @Column(name = "password")
     private String password;
     
-    @OneToMany(mappedBy = "technitian", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<TechCard> techCards;
     // Add other variables as needed
     

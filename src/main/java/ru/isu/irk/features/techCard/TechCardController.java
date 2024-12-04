@@ -59,7 +59,7 @@ public class TechCardController {
             Errors errors, Model model){
         if(errors.hasErrors()){
             System.out.println(errors.getFieldErrors());
-            return "addTechCard";
+            return "techCard/addTechCard";
         }
         techCardService.save(techCard);
         System.out.println(techCard);

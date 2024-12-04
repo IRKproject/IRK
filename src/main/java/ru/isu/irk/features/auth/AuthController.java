@@ -16,11 +16,11 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLoginPage() {
-        return "login";
+        return "auth/login";
     }
     
     @GetMapping("/profile")
     public String showProfilePage() {
-        return "profile";
+        return "auth/profile";
     }
 }

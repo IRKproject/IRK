@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import ru.isu.irk.features.part.Part;
+import ru.isu.irk.features.part.PartService;
 
 // import ru.isu.irk.features.part.*;
 // import ru.isu.irk.features.PartService.*;
@@ -52,14 +54,14 @@ public class PartController {
     public String listParts(Model model) {
         List<Part> parts = partService.getAllParts();
         model.addAttribute("parts", parts);
-        return "listParts";
+        return "part/listParts";
     }
     
     @GetMapping("/add")
     public String addPart(Model model) {
         Part part = new Part();
         model.addAttribute("parts", part);
-        return "addPart";
+        return "part/addPart";
     }
     
     @PostMapping("/save")
@@ -72,7 +74,7 @@ public class PartController {
     public String editPart(@PathVariable("partId") Long partId, Model model) {
         Part part = partService.getPartById(partId);
         model.addAttribute("part", part);
-        return "editPart";
+        return "part/editPart";
     }
     
     @PostMapping("/update")

@@ -44,7 +44,7 @@ public class InstrumentController {
     public String listInstruments(Model model) {
         List<Instrument> allInstruments = instrumentService.getAllInstruments();
         model.addAttribute("allInstruments", allInstruments);
-        return "listInstruments";
+        return "instrument/listInstruments";
     }
     
     @GetMapping("/add")
@@ -52,7 +52,7 @@ public class InstrumentController {
         List<Part> allParts = partService.getAllParts();
         model.addAttribute("allParts", allParts);
         model.addAttribute("instrument", new Instrument());
-        return "addInstrument";
+        return "instrument/addInstrument";
     }
     
     @GetMapping("/edit/{instrumentId}")
@@ -61,7 +61,7 @@ public class InstrumentController {
         model.addAttribute("instrument", instrument);
         System.out.println(instrumentId);
         System.out.println(instrument);
-        return "editInstrument";
+        return "instrument/editInstrument";
     }
     
     @PostMapping("/update")

@@ -1,0 +1,72 @@
+package ru.isu.part;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.isu.part.Part;
+import ru.isu.part.PartService;
+
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+@WebMvcTest(PartController.class)
+class PartControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private PartService partService;
+
+    @Test
+    void testListParts() throws Exception {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+        when(partService.getAllParts()).thenReturn(List.of(part));
+
+        mockMvc.perform(get("/parts"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("parts"))
+            .andExpect(view().name("part/listParts"));
+    }
+
+    @Test
+    void testAddPart() throws Exception {
+        mockMvc.perform(get("/parts/add"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("parts"))
+            .andExpect(view().name("part/addPart"));
+    }
+
+    @Test
+    void testSavePart() throws Exception {
+        mockMvc.perform(post("/parts/save")
+                .param("type", "Body")
+                .param("specification", "Steel")
+                .param("quantity", "10")
+                .param("reference", "REF001"))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/parts"));
+    }
+
+    @Test
+    void testEditPart() throws Exception {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+        when(partService.getPartById(1L)).thenReturn(part);
+
+        mockMvc.perform(get("/parts/edit/1"))
+            .andExpect(status().isOk())
+            .andExpect(model().attributeExists("part"))
+            .andExpect(view().name("part/editPart"));
+    }
+}

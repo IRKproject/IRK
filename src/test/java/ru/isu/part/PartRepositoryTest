@@ -1,0 +1,41 @@
+package ru.isu.part;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+
+@DataJpaTest
+class PartRepositoryTest {
+
+    @Autowired
+    private PartRepository partRepository;
+
+    @Test
+    void testSaveAndFindById() {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+        part = partRepository.save(part);
+
+        Part found = partRepository.findById(part.getId()).orElse(null);
+
+        assertNotNull(found);
+        assertEquals("Body", found.getType());
+    }
+
+    @Test
+    void testFindAll() {
+        Part part1 = new Part("Body", "Steel", 10, "REF001");
+        Part part2 = new Part("Plate", "Aluminum", 5, "REF002");
+        partRepository.save(part1);
+        partRepository.save(part2);
+
+        assertEquals(2, partRepository.findAll().size());
+    }
+}

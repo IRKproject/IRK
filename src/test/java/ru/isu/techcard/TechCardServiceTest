@@ -1,0 +1,57 @@
+package ru.isu.techcard;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import ru.isu.irk.features.instrument.Instrument;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+class TechCardServiceTest {
+
+    @Mock
+    private TechCardRepository techCardRepository;
+
+    private TechCardService techCardService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        techCardService = new TechCardService(techCardRepository);
+    }
+
+    @Test
+    void testGetById() {
+        TechCard techCard = new TechCard();
+        techCard.setId(1);
+        techCard.setCardId("TC001");
+
+        when(techCardRepository.findById(1)).thenReturn(techCard);
+
+        TechCard result = techCardService.getById(1);
+
+        assertNotNull(result);
+        assertEquals("TC001", result.getCardId());
+        verify(techCardRepository).findById(1);
+    }
+
+    @Test
+    void testSave() {
+        TechCard techCard = new TechCard();
+        techCard.setCardId("TC002");
+
+        techCardService.save(techCard);
+
+        verify(techCardRepository).save(techCard);
+    }
+}

@@ -1,0 +1,87 @@
+package ru.isu.techcard;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import ru.isu.irk.features.instrument.Instrument;
+
+import java.util.List;
+
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+@WebMvcTest(TechCardController.class)
+class TechCardControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private TechCardService techCardService;
+
+    @Test
+    void testGetTechCard() throws Exception {
+        TechCard techCard = new TechCard();
+        techCard.setCardId("TC001");
+        techCard.setId(1);
+
+        when(techCardService.getById(1)).thenReturn(techCard);
+
+        mockMvc.perform(get("/techcard/get/1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.cardId").value("TC001"));
+    }
+
+    @Test
+    void testAddTechCard() throws Exception {
+        String techCardJson = """
+                {
+                    "cardId": "TC002",
+                    "instruments": []
+                }
+                """;
+
+        mockMvc.perform(post("/techcard/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(techCardJson))
+            .andExpect(status().isOk())
+            .andExpect(content().string("TechCard added successfully"));
+    }
+
+    @Test
+    void testAddInstrumentToTechCard() throws Exception {
+        TechCard techCard = new TechCard();
+        techCard.setId(1);
+        techCard.setCardId("TC001");
+
+        Instrument instrument = new Instrument();
+        instrument.setId(2);
+
+        when(techCardService.getById(1)).thenReturn(techCard);
+
+        String instrumentJson = """
+                {
+                    "id": 2
+                }
+                """;
+
+        mockMvc.perform(post("/techcard/addInstrument/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(instrumentJson))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Instrument added to TechCard successfully"));
+
+        verify(techCardService).save(techCard);
+    }
+}

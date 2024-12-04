@@ -1,0 +1,63 @@
+package ru.isu.part;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+class PartServiceTest {
+
+    @Mock
+    private PartRepository partRepository;
+
+    private PartService partService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        partService = new PartService(partRepository);
+    }
+
+    @Test
+    void testGetAllParts() {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+        when(partRepository.findAll()).thenReturn(List.of(part));
+
+        List<Part> parts = partService.getAllParts();
+
+        assertEquals(1, parts.size());
+        verify(partRepository).findAll();
+    }
+
+    @Test
+    void testGetPartById() {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+        when(partRepository.findById(1L)).thenReturn(Optional.of(part));
+
+        Part result = partService.getPartById(1L);
+
+        assertNotNull(result);
+        assertEquals("Body", result.getType());
+        verify(partRepository).findById(1L);
+    }
+
+    @Test
+    void testSavePart() {
+        Part part = new Part("Body", "Steel", 10, "REF001");
+
+        partService.savePart(part);
+
+        verify(partRepository).save(part);
+    }
+}

@@ -1,0 +1,44 @@
+package ru.isu.techcard;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import ru.isu.irk.features.instrument.Instrument;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ *
+ * @author Danil
+ */
+
+@DataJpaTest
+class TechCardRepositoryTest {
+
+    @Autowired
+    private TechCardRepository techCardRepository;
+
+    @Test
+    void testFindById() {
+        TechCard techCard = new TechCard();
+        techCard.setCardId("TC001");
+        techCard = techCardRepository.save(techCard);
+
+        TechCard found = techCardRepository.findById(techCard.getId());
+        assertNotNull(found);
+        assertEquals("TC001", found.getCardId());
+    }
+
+    @Test
+    void testSave() {
+        TechCard techCard = new TechCard();
+        techCard.setCardId("TC002");
+
+        TechCard saved = techCardRepository.save(techCard);
+
+        assertNotNull(saved.getId());
+        assertEquals("TC002", saved.getCardId());
+    }
+}

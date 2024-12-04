@@ -1,7 +1,7 @@
 package ru.isu.irk.features.techCard;
 
 import ru.isu.irk.features.instrument.*;
-import ru.isu.irk.features.technitian.*;
+// import ru.isu.irk.features.technitian.*;
 
 import jakarta.persistence.CascadeType;
 //import jakarta.persistence.CollectionTable;
@@ -12,13 +12,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+// import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 //import jakarta.persistence.OrderColumn;
 import jakarta.persistence.Table;
 //import jakarta.validation.constraints.Min;
 //import jakarta.validation.constraints.Past;
 //import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.ArrayList;
 
 //import java.time.LocalDate;
 //import java.util.ArrayList;
@@ -32,7 +36,7 @@ public class TechCard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    public int id;
     
     @Column(name = "card_id")
     private String cardId;
@@ -41,18 +45,38 @@ public class TechCard {
     @JoinColumn(name = "tech_card_id")
     private List<Instrument> instruments;
     
-    @ManyToOne
-    @JoinColumn(name = "technitian_id")
-    private Technitian technitian;
+    @ManyToMany
+    @JoinTable(
+        name = "techcard_instruments",
+        joinColumns = @JoinColumn(name = "tech_card_id"),
+        inverseJoinColumns = @JoinColumn(name = "instrument_id")
+    )
+    private List<Instrument> selectedInstruments = new ArrayList<>();
     
 
-    public TechCard(String cardId, List<Instrument> instruments) {
+    public TechCard(String cardId, List<Instrument> selectedInstruments) {
         this.cardId = cardId;
-        this.instruments = instruments;
+        this.selectedInstruments = selectedInstruments;
     }
 
     public TechCard() {
         
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Instrument> getSelectedInstruments() {
+        return selectedInstruments;
+    }
+
+    public void setSelectedInstruments(List<Instrument> selectedInstruments) {
+        this.selectedInstruments = selectedInstruments;
     }
 
     public String getCardId() {
@@ -70,16 +94,10 @@ public class TechCard {
     public void setInstruments(List<Instrument> instruments) {
         this.instruments = instruments;
     }
-    
-    //MOVE TO CONTROLLER
-    // Method to add a new Instrument to the TechCard
-    /*public void addInstrument(Instrument instrument) {
-        instruments.add(instrument);
-        instrument.setTechCard(this);
-    }*/
 
-    /*public void setWorker(IRK_Worker worker) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }*/
+    @Override
+    public String toString() {
+        return "TechCard{" + "id=" + id + ", cardId=" + cardId + ", instruments=" + instruments + ", selectedInstruments=" + selectedInstruments + '}';
+    }
 }
 

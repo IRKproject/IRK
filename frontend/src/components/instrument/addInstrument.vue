@@ -1,29 +1,31 @@
 <template>
-    <div>
+    <div class="main">
         <header-component></header-component>
-        <h1>Add Instrument</h1>
+        <h1>Добавить инструмент</h1>
         <form @submit.prevent="saveInstrument">
-            <label for="instrumentName">Instrument number:</label>
-            <input type="text" id="instrumentName" v-model="instrument.instrumentNumber" required />
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Type</th>
-                    <th>Specification</th>
-                    <th>Quantity</th>
-                    <th>Reference</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="part in allParts" :key="part.id">
-                    <td><input type="checkbox" :value="part" v-model="instrument.selectedParts"/></td>
-                    <td>{{ part.type }}</td>
-                    <td>{{ part.specification }}</td>
-                    <td>{{ part.quantity }}</td>
-                    <td>{{ part.reference }}</td>
-                </tr>
-            </tbody>
-            <button type="submit">Add</button>
+            <label for="instrumentName">Номер инструмента:</label>
+            <input class="form-control" type="text" v-model="instrument.instrumentNumber" required />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Тип</th>
+                        <th>Спецификация</th>
+                        <th>Количество</th>
+                        <th>Наименование</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="part in allParts" :key="part.id">
+                        <td><input type="checkbox" :value="part" v-model="instrument.selectedParts"/></td>
+                        <td>{{ part.type }}</td>
+                        <td>{{ part.specification }}</td>
+                        <td>{{ part.quantity }}</td>
+                        <td>{{ part.reference }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-primary" type="submit">Добавить</button>
         </form>
     </div>
 </template>
@@ -53,7 +55,6 @@ export default {
     },
     methods: {
         saveInstrument(e) {
-            console.log('Sending data:', this.instrument);
             e.preventDefault();
             http
                 .post("instruments/save",this.instrument)
@@ -68,3 +69,11 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.main{
+    margin-left: 15%;
+    margin-right: 15%;
+}
+.btn{min-width: 100px;}
+</style>

@@ -20,7 +20,7 @@ public class Instrument {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    public int id;
+    public Long id;
     
     @Column(name = "instrument_number")
     private int instrumentNumber;
@@ -38,11 +38,11 @@ public class Instrument {
         this.selectedParts = parts;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

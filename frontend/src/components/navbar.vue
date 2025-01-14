@@ -1,13 +1,18 @@
 <template>
     <div>
-        <nav>
-            <router-link class="item" to="/instruments">Список инструментов</router-link>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <h1>ИРК</h1>
+
+            <h5><router-link class="nav-link" to="/instruments">Инструменты</router-link></h5>
+            <h5><router-link class="nav-link" to="/parts">Части</router-link></h5>
+            <h5><router-link class="nav-link" to="/techcards">Техкарты</router-link></h5>
+
         </nav>
+        
     </div>
 </template>
 
 <script>
-// import ListInstrument from './instrument/listInstrument.vue';
 
 export default {
         name: "NavBar",
@@ -18,3 +23,8 @@ export default {
         }
     };
 </script>
+<style>
+
+h1{margin-left: 3%;}
+h5{margin-left: 3%;}
+</style>

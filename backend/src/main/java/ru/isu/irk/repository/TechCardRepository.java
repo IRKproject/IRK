@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import ru.isu.irk.model.TechCard;
 
 @Repository
-public interface TechCardRepository extends JpaRepository<TechCard, Integer> {
-    TechCard findById(long id);
+public interface TechCardRepository extends JpaRepository<TechCard, Long> {
 }

@@ -1,15 +1,17 @@
 package ru.isu.irk.service;
 
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import ru.isu.irk.model.Technitian;
 import ru.isu.irk.repository.TechnitianRepository;
 
 @Service
 public class TechnitianService {
 
-    private TechnitianRepository technitianRepository;
+    private final TechnitianRepository technitianRepository;
 
     @Autowired
     public TechnitianService(TechnitianRepository technitianRepository) {

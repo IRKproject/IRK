@@ -15,4 +15,6 @@ public class CorsConfig implements WebMvcConfigurer  {
                 .allowCredentials(true) // Разрешить передачу куки и авторизационных данных
                 .maxAge(3600); // Время кэширования CORS-запросов (в секундах)
     }
+
+    
 }

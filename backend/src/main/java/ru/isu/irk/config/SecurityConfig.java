@@ -1,100 +1,78 @@
 package ru.isu.irk.config;
 
-/*import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import ru.isu.irk.service.IRK_WorkerInfoService;
+
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-            .username("admin")
-            .password("admin")
-            .roles("ADMIN")
-            .build();
-
-        return new InMemoryUserDetailsManager(user);
-    }
+    @Autowired
+    private IRK_WorkerInfoService irkWorkerInfoService; // Внедряем сервис
 
     @Bean
-    public UserDetailsService users(){
-        UserDetails user = User.builder()
-                .username("IRK_User1")
-                .password("123")
-                .roles("USER")
-                .build();        
-        UserDetails admin = User.builder()
-                .username("IRK_admin")
-                .password("12345")
-                .roles("USER","ADMIN")
-                .build();        
-        return new InMemoryUserDetailsManager(user, admin);
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.csrf(AbstractHttpConfigurer::disable)
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/**").permitAll()
+            .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .loginProcessingUrl("/login")
+            .usernameParameter("username") // Указываем параметр для логина
+            .passwordParameter("password") // Указываем параметр для пароля
+            .successHandler((request, response, authentication) -> {
+                response.setContentType("application/json");
+                response.getWriter().write("{\"token\": \"your_jwt_token_here\"}");
+                System.out.println("Успешный вход!");
+                response.setStatus(HttpStatus.OK.value());
+            })
+            .failureHandler((request, response, exception) -> {
+                response.setContentType("application/json");
+                response.getWriter().write("{\"error\": \"Login failed\"}");
+                System.out.println("Ошибка входа: " + exception.getMessage());
+                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            })
+            .permitAll()
+        )
+        .httpBasic(Customizer.withDefaults());
+
+    return http.build();
+}   
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(); // Используем BCrypt для кодирования паролей
     }
-}*/
     
-    /*@Bean
-    public UserDetailsService users(){
-        UserDetails user = User.builder()
-                .username("user")
-                .password("{noop}123")
-                .roles("USER")
-                .build();        
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password("{noop}123")
-                .roles("USER","ADMIN")
-                .build();        
-        return new InMemoryUserDetailsManager(user, admin);
-    }*/
     
 
-/*import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-
-@Configuration
-@EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Bean
-    @Override
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin")
-            .password("{noop}admin")
-            .roles("ADMIN")
-            .build();
-
-        UserDetails user1 = User.withUsername("IRK_User1")
-                .password("{noop}123")
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User.withUsername("IRK_admin")
-                .password("{noop}12345")
-                .roles("USER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user, user1, admin);
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(irkWorkerInfoService); // Используем внедрённый сервис
+        provider.setPasswordEncoder(passwordEncoder());
+        return provider;
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
-    }
-}*/
+    // @Autowired
+    // public void configureGlobal(AuthenticationManagerBuilder auth, AuthenticationProvider authenticationProvider) throws Exception {
+    //     auth.authenticationProvider(authenticationProvider); // Внедряем AuthenticationProvider
+    // }
+}

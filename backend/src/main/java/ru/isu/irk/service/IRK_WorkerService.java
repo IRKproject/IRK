@@ -19,7 +19,7 @@ public class IRK_WorkerService {
         this.workerRepository = workerRepository;
     }
 
-    public IRK_Worker getWorkerById(int id) {
+    public IRK_Worker getWorkerById(Long id) {
         return workerRepository.findById(id).orElse(null);
     }
 
@@ -27,7 +27,7 @@ public class IRK_WorkerService {
         return workerRepository.save(worker);
     }
 
-    public TechCard addTechCard(int workerId, TechCard techCard) {
+    public TechCard addTechCard(Long workerId, TechCard techCard) {
         IRK_Worker worker = workerRepository.findById(workerId).orElse(null);
         if (worker == null) {
             return null;
@@ -38,11 +38,11 @@ public class IRK_WorkerService {
         return techCard;
     }
 
-    public void deleteIRK_Worker(int id) {
+    public void deleteIRK_Worker(Long id) {
         workerRepository.deleteById(id);
     }
 
-    public IRK_Worker updateIRK_Worker(int id, IRK_Worker worker) {
+    public IRK_Worker updateIRK_Worker(Long id, IRK_Worker worker) {
         IRK_Worker existingWorker = workerRepository.findById(id).orElse(null);
         //if (existingTechnitian != null) {
             existingWorker.setUsername(worker.getUsername());
@@ -57,7 +57,7 @@ public class IRK_WorkerService {
         return workerRepository.save(worker);
     }
 
-    public IRK_Worker getIRK_WorkerById(int id) {
+    public IRK_Worker getIRK_WorkerById(Long id) {
         Optional<IRK_Worker> optionalWorker = workerRepository.findById(id);
         return optionalWorker.orElse(null);
     }

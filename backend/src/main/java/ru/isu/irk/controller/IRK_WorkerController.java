@@ -31,7 +31,7 @@ public class IRK_WorkerController
     }
 
     /*@GetMapping("/{id}")
-    public ResponseEntity<IRK_Worker> getWorkerById(@PathVariable("id") int id) {
+    public ResponseEntity<IRK_Worker> getWorkerById(@PathVariable("id") Long id) {
         IRK_Worker worker = workerService.getWorkerById(id);
         if (worker == null) {
             return ResponseEntity.notFound().build();
@@ -46,7 +46,7 @@ public class IRK_WorkerController
     }
 
     @PostMapping("/{id}/techcards")
-    public ResponseEntity<TechCard> addTechCard(@PathVariable("id") int id, @RequestBody TechCard techCard) {
+    public ResponseEntity<TechCard> addTechCard(@PathVariable("id") Long id, @RequestBody TechCard techCard) {
         TechCard addedTechCard = workerService.addTechCard(id, techCard);
         if (addedTechCard == null) {
             return ResponseEntity.notFound().build();
@@ -66,7 +66,7 @@ public class IRK_WorkerController
         }*/
     }
     @GetMapping("/{id}")
-    public IRK_Worker getIRK_Worker(@PathVariable("id") int id) {
+    public IRK_Worker getIRK_Worker(@PathVariable("id") Long id) {
         return workerService.getIRK_WorkerById(id);
     }
 
@@ -76,12 +76,12 @@ public class IRK_WorkerController
     }
 
     @PutMapping("/{id}")
-    public IRK_Worker updateIRK_Worker(@PathVariable("id") int id, @RequestBody IRK_Worker worker) {
+    public IRK_Worker updateIRK_Worker(@PathVariable("id") Long id, @RequestBody IRK_Worker worker) {
         return workerService.updateIRK_Worker(id, worker);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteIRK_Worker(@PathVariable("id") int id) {
+    public void deleteIRK_Worker(@PathVariable("id") Long id) {
         workerService.deleteIRK_Worker(id);
     }
 }

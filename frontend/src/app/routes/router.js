@@ -1,5 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 // импорт компонентов
+import Login from "../../pages/auth/login";
+
 import ListInstrument from "../../pages/instrument/listInstrument";
 import AddInstrument from "../../pages/instrument/addInstrument";
 import EditInstrument from "../../pages/instrument/editInstrument";
@@ -17,7 +19,15 @@ import EditTechcard from "../../pages/techcard/editTechcard.vue";
 const routes = [
     {
         path: "/",
-        redirect: "/instruments"
+        redirect: "/login"
+    },
+    {
+        path: "/login",
+        name: "login",
+        component: Login,
+        meta: {
+            title: "ИРК-Авторизация"
+        }
     },
     {
         path: "/instruments",

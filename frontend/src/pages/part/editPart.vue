@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import http from '../../http-common.js';
+import http from '../../shared/api/http-common.js';
 
 export default {
     data() {

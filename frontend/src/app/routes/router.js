@@ -1,16 +1,16 @@
 import { createWebHistory, createRouter } from "vue-router";
 // импорт компонентов
-import ListInstrument from "./components/instrument/listInstrument";
-import AddInstrument from "./components/instrument/addInstrument";
-import EditInstrument from "./components/instrument/editInstrument";
+import ListInstrument from "../../pages/instrument/listInstrument";
+import AddInstrument from "../../pages/instrument/addInstrument";
+import EditInstrument from "../../pages/instrument/editInstrument";
 
-import ListParts from "./components/part/listParts";
-import AddPart from "./components/part/addPart";
-import EditPart from "./components/part/editPart";
+import ListParts from "../../pages/part/listParts";
+import AddPart from "../../pages/part/addPart";
+import EditPart from "../../pages/part/editPart";
 
-import ListTechcard from "./components/techcard/listTechcard.vue";
-import AddTechcard from "./components/techcard/addTechcard.vue";
-import EditTechcard from "./components/techcard/editTechcard.vue";
+import ListTechcard from "../../pages/techcard/listTechcard.vue";
+import AddTechcard from "../../pages/techcard/addTechcard.vue";
+import EditTechcard from "../../pages/techcard/editTechcard.vue";
 
 
 // определяем маршруты

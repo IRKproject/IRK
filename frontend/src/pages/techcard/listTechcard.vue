@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import http from "../../http-common";
+import http from "../../shared/api/http-common";
 export default {
   data() {
     return {

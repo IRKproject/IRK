@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <header-component></header-component>
-        <h1>Добавить деталь</h1>
+        <h1>Редактировать деталь</h1>
         <form @submit.prevent="editPart">
             <label for="instrumentName">Тип детали:</label><br>
             <input class="form-check-input" type="radio" value='Body' v-model="part.type" checked>
@@ -38,7 +38,7 @@
             <label for="instrumentName">Наименование:</label><br>
             <input class="form-control" type="text" v-model="part.reference" required />
             
-            <button class="btn btn-primary" type="submit">Добавить</button>
+            <button class="btn btn-primary" type="submit">Сохранить изменения</button>
         </form>
         <button class="btn btn-danger" type="button" @click="deletePart">Удалить деталь</button>
     </div>
@@ -105,5 +105,5 @@ export default {
     margin-left: 15%;
     margin-right: 15%;
 }
-.btn{min-width: 100px;}
+.btn{min-width: 400px;}
 </style>

@@ -7,5 +7,4 @@ import ru.isu.irk.model.Part;
 
 @Repository
 public interface PartRepository extends JpaRepository<Part, Long> {
-    
 }

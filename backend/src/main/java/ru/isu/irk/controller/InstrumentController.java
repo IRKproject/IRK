@@ -1,9 +1,10 @@
 package ru.isu.irk.controller;
 
-// import jakarta.validation.Valid;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,11 +35,6 @@ public class InstrumentController {
     public List<Instrument> listInstruments() {
         return instrumentService.getAllInstruments();
     }
-    
-    // @PostMapping("/save")
-    // public Instrument saveInstrument(@RequestBody Instrument instrument) {
-    //     return instrumentService.saveInstrument(instrument);
-    // }
 
     @GetMapping("/get/{id}")
     @ResponseBody
@@ -46,9 +42,6 @@ public class InstrumentController {
         return instrumentService.getInstrumentById(id);
     }
 
-    
-
-    // @GetMapping("/add")
     @PostMapping("/save")
     public Instrument addInstrument(@RequestBody Instrument instrument) {
         return instrumentService.saveInstrument(instrument);
@@ -57,5 +50,10 @@ public class InstrumentController {
     @PostMapping("/edit/{instrumentId}")
     public Instrument editInstrument(@PathVariable("instrumentId") Long instrumentId, @RequestBody Instrument instrument) {
         return instrumentService.updateInstrument(instrumentId, instrument);
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteInstrument(@PathVariable Long id) {
+        instrumentService.deleteInstrument(id);
+        return ResponseEntity.ok().build();
     }
 }
